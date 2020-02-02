@@ -28,7 +28,6 @@ class ItemDao {
 
     await db.connect();
 
-
     await db.query(`INSERT INTO items (
         name,
         amount,
