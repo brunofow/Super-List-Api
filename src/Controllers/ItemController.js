@@ -38,7 +38,7 @@ module.exports = {
 
     itemDao.delete(id);
 
-    resp.json({ message: `Item deletado`});
+    resp.json({ message: `Item desletado`});
   }
 }
 
