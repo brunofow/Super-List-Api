@@ -1,4 +1,5 @@
 const db = require('./database');
+const bcrypt = require('bcrypt');
 
 class UserDao {
 
@@ -9,26 +10,45 @@ class UserDao {
 		const user = await db.query(`SELECT * FROM users WHERE ID = ${id}`);
 
 		return user;
-
 	}
 
 	async findByEmail(email) {
 
 		await db.connect();
 
-		const user = await db.query(`SELECT * FROM users WHERE email = ${email}`);
+		const user = await db.query(`SELECT * FROM users WHERE email = '${email}'`);
+		
+		const emptyUser = [
+			{
+				'email': 'wr0ngUs3r',
+				'password': 'pimba'
+			}
+		]
 
-		return user;
+		if (user.rowCount < 1) {
+			return emptyUser
+		} 
+
+		return user.rows[0];
+
+
 	}
 
 	async insert(user) {
 
 		await db.connect();
 
-		await db.query(`INSERT INTO users (
-            username,
-            password
-        ) VALUES (${user.username}, ${user.password})`)
+		bcrypt.genSalt(10, (err, salt) => {
+			bcrypt.hash(user.password, salt, async (err, hash) => {
+				await db.query(`INSERT INTO users (
+					email,
+					password
+			) VALUES ('${user.email}', '${hash}')`)
+				
+			})
+		})
+
+		
 	};
 
 }
