@@ -14,7 +14,8 @@ async function createTable() {
   await db.query(`CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     email VARCHAR(50),
-    password VARCHAR(250)
+    password VARCHAR(250),
+    name VARCHAR(42)
   )`)
 
   await db.end();

@@ -42,8 +42,9 @@ class UserDao {
 			bcrypt.hash(user.password, salt, async (err, hash) => {
 				await db.query(`INSERT INTO users (
 					email,
-					password
-			) VALUES ('${user.email}', '${hash}')`)
+					password,
+					name
+			) VALUES ('${user.email}', '${hash}', '${user.name}')`)
 				
 			})
 		})

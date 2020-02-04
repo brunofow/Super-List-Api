@@ -30,17 +30,18 @@ module.exports = {
 
   async store(req, resp) {
 
-    const { email } = req.body;
+    const { email, password, confirmPassword } = req.body;
 
     const registeredUser = await userDao.findByEmail(email);
 
     if (registeredUser.email == email) {
-      resp.json({ message: 'Usuário já cadastrado' })
+      resp.json({ emailMessage: 'Usuário já cadastrado' })
+    } else if(password != confirmPassword) {
+      resp.json({ passwordMessage: 'Senhas não conferem'})
     } else {
-
       await userDao.insert(req.body);
 
-      resp.json({ message: 'Cadastrado com sucesso' })
+      resp.json({ success: 'Cadastrado com sucesso' })
     }
 
 
